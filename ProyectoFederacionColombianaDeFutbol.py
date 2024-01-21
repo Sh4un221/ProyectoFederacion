@@ -1,44 +1,12 @@
-# LA FEDERACION COLOMBIANA DE FUTBOL DESEA CREAR UN PROGRAMA QUE LE PERMITA
-# LLEVAR EL CONTROL Y REGISTRO DE TODOS LOS EQUIPOS QUE SE ENCUENTRAN
-# PARTICIPANDO EN LA LIGA BETPLAY. LA FEDERACION DESEA ORGANIZAR EL TORNEO
-# TENIENDO EN CUENTA LA SIGUIENTE INFORMACION:
-
-#     - NOMBRE DEL EQUIPO
-#     - PJ
-#     - PG
-#     - PP
-#     - PE
-#     - GF
-#     - GC
-#     - TP
-
-# REQUERIMIENTOS:
-# 1. EL PROGRAMA DEBE PERMITIR REGISTRAR CADA UNO DE LOS EQUIPOS QUE VAN A
-# PARTICIPAR EN EL TORNEO, TENGA EN CUENTA QUE AL MOMENTO DE REGISTRAR CADA
-# EQUIPO LAS VARIABLES DE PJ,PG,PP,PE,GF,GC,TP DEBEN SER 0
-
-# 2. REGISTRO DE FECHA. EL REGISTRO DE FECHAS SE DEBE INGRESAR LOS EQUIPOS
-# QUE SE ENFRENTARON. EL PROGRAMA DEBE PERMITIR SELECCIONAR QUE EQUIPO JUGO DE
-# LOCAL Y QUE EQUIPO JUGO DE VISITANTE. ADEMAS SE DEBE REGISTRAR EL MARCADOR DE
-# CADA UNO DE LOS EQUIPOS. EL PROGRAMA DEBE DETERMINAR CUAL FUE EL EQUIPO
-# GANADOR Y CUAL ES EL PERDEDOR Y ASIGNAR LOS VALORES CORRESPONDIENTES EN LA
-# TABLA DE POSICIONES. RECUERDE QUE CADA PARTIDO GANADO EQUIVALE A 3 PUNTO
-# Y LOS EMPATADOS EQUIVALEN A 1 PUNTO.
-
-# 3. REPORTES
-#     A. NOMBRE DEL EQUIPO QUE MAS GOLES ANOTO
-#     B. NOMBRE DEL EQUIPO QUE MAS PUNTOS TIENE
-#     C. NOMBRE DEL EQUIPO QUE MAS PARTIDOS GANO
-#     D. TOTAL DE GOLES ANOTADOS POR TODOS LOS EQUIPOS
-#     E. PROMEDIO DE GOLES ANOTADOS EN EL TORNEO
 import os
 os.system('cls')
+from tabulate import tabulate
 tituloRegistroDeEquipos="""
 +++++++++++++++++++++++++++++++++++++++
 +   FEDERACION COLOMBIANA DE FUTBOL   +
 +++++++++++++++++++++++++++++++++++++++
 """
-opciones="1. Registro de equipos\n2. Registro de fecha\n3. Tabla de posiciones\n4.Finalizar el programa"
+opciones="1. Registro de equipos\n2. Registro de fecha\n3. Tabla de posiciones\n4. Mostrar reporte\n5. Finalizar el programa"
 isActivate=True
 informacionPartidos=[]
 fechasRegistradas=[]
@@ -68,50 +36,98 @@ while isActivate:
     elif(op==2):
         nombreEquipoLocal=str(input("Ingrese el nombre del equipo local: "))
         nombreEquipoVisitante=str(input("Ingrese el nombre del equipo visitante: "))
-        golesAnotadosL=int(input("Ingrese numero de goles que anoto el equipo local "))
-        golesAnotadosV=int(input("Ingrese el numero de goles que anoto el equipo visitante "))
+        golesAnotadosL=int(input("Ingrese numero de goles que anoto el equipo local: "))
+        golesAnotadosV=int(input("Ingrese el numero de goles que anoto el equipo visitante: "))
+        entra=False
+        contCorrecto=int(0)
         for i,item in enumerate(informacionPartidos):
-          
-            if(nombreEquipoLocal in item):  
-                item[5]+=golesAnotadosL
-                item[6]+=golesAnotadosV
-                item[1]+=1
-                if(golesAnotadosL>golesAnotadosV):
-                    item[2]+=1
-                    item[7]+=3
-                elif(golesAnotadosL==golesAnotadosV):
-                    item[4]+=1
-                    item[7]+=1
-                else:
-                    item[3]+=1
-                
-            if(nombreEquipoVisitante in item):
-                item[5]+=golesAnotadosV
-                item[6]+=golesAnotadosL 
-                item[1]+=1
-                if(golesAnotadosV>golesAnotadosL):
-                    item[2]+=1
-                    item[7]+=3
-                elif(golesAnotadosV==golesAnotadosL):
-                    item[4]+=1
-                else:
-                    item[3]+=1
+            if((item[0]==nombreEquipoLocal)or(item[0]==nombreEquipoVisitante)):
+                contCorrecto+=1
+            else:
+                i+=1
+            if(contCorrecto==2):
+                entra=True
+            elif(contCorrecto==1):
+                print("Uno de los equipos ingresados no se encuentra registrado")    
+            elif(contCorrecto==0):
+                print("Ninguno de los equipos ingresados estan registrados")    
+        if(entra):
+            for i,item in enumerate(informacionPartidos):
+                if(nombreEquipoLocal in item):  
+                    item[5]+=golesAnotadosL
+                    item[6]+=golesAnotadosV
+                    item[1]+=1
+                    if(golesAnotadosL>golesAnotadosV):
+                        item[2]+=1
+                        item[7]+=3
+                    elif(golesAnotadosL==golesAnotadosV):
+                        item[4]+=1
+                        item[7]+=1
+                    else:
+                        item[3]+=1
+                    
+                if(nombreEquipoVisitante in item):
+                    item[5]+=golesAnotadosV
+                    item[6]+=golesAnotadosL 
+                    item[1]+=1
+                    if(golesAnotadosV>golesAnotadosL):
+                        item[2]+=1
+                        item[7]+=3
+                    elif(golesAnotadosV==golesAnotadosL):
+                        item[4]+=1
+                        item[7]+=1
+                    else:
+                        item[3]+=1
+                i+=1
             fechasRegistradas.append([nombreEquipoLocal,nombreEquipoVisitante,golesAnotadosL,golesAnotadosV])
-            i+=1
-        if (golesAnotadosL>golesAnotadosV):
-            print("El equipo ",nombreEquipoLocal," que estaba jugando de local gano con ",golesAnotadosL," goles")
-            print("El equipo ",nombreEquipoVisitante," perdió")
-            os.system('pause')
-        elif(golesAnotadosL==golesAnotadosV):
-            print("El equipo ",nombreEquipoLocal," y el equipo ",nombreEquipoVisitante," empataron")
-            os.system('pause')
-        else:
-            print("El equipo ",nombreEquipoVisitante," que estaba jugando de visitante gano con ",golesAnotadosL," goles")
-            print("El equipo ",nombreEquipoLocal," perdió")
-            os.system('pause')
+            if (golesAnotadosL>golesAnotadosV):
+                os.system('cls')
+                print("El equipo ",nombreEquipoLocal," que estaba jugando de local gano con ",golesAnotadosL," goles")
+                print("El equipo ",nombreEquipoVisitante," perdió")
+                os.system('pause')
+            elif(golesAnotadosL==golesAnotadosV):
+                os.system('cls')
+                print("El equipo ",nombreEquipoLocal," y el equipo ",nombreEquipoVisitante," empataron")
+                os.system('pause')
+            else:
+                os.system('cls')
+                print("El equipo ",nombreEquipoVisitante," que estaba jugando de visitante gano con ",golesAnotadosV," goles")
+                print("El equipo ",nombreEquipoLocal," perdió")
+                os.system('pause')
     elif(op==3):
-        pass
+        os.system('cls')
+        print(tabulate(informacionPartidos,headers=['Equipo','PJ','PG','PP','PE','GF','GC','PT']))
+        os.system('pause')
     elif(op==4):
+        mayorGoles=int(0)
+        mayorPuntos=int(0)
+        mayorPartidosGanados=int(0)
+        totalGolesTorneo=int(0)
+        totalDePartidosJugados=int(0)
+        nombreEquipoGF=""
+        nombreEquipoMP=""
+        nombreEquipoPG=""
+        for i,item in enumerate(informacionPartidos):
+            if(item[7]>mayorPuntos):
+                mayorPuntos=item[7]
+                nombreEquipoMP=item[0]
+            if(item[5]>mayorGoles):
+                mayorGoles=item[5]
+                nombreEquipoGF=item[0]
+            totalGolesTorneo+=item[5]
+            if(item[2]>mayorPartidosGanados):
+                mayorPartidosGanados=item[2]
+                nombreEquipoPG=item[0]
+            totalDePartidosJugados+=item[1]
+            i=+1
+        print("El equipo con mayor numero de goles es: ",nombreEquipoGF)
+        print("El equipo con mayor numero de puntos es: ",nombreEquipoMP)
+        print("El equipo con mayor numero de partidos ganados es: ",nombreEquipoPG)
+        print("El total de goles que se marcaron en este torneo es: ",totalGolesTorneo)
+        print("El porcentaje de goles del torneo por partido jugado fue: ",(totalGolesTorneo/totalDePartidosJugados))
+        os.system('pause')
+        
+    elif(op==5):
         os.system('cls')
         isActivate=False
         print("Gracias por usar el programa\nTenga un buen dia.")
