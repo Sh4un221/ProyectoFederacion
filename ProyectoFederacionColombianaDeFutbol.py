@@ -56,14 +56,14 @@ while isActivate:
                 contCorrecto+=1
             else:
                 i+=1
-            if(contCorrecto==2):
-                entra=True
-            elif(contCorrecto==1):
-                print("Uno de los equipos ingresados no se encuentra registrado")
-                os.system('pause')    
-            elif(contCorrecto==0):
-                print("Ninguno de los equipos ingresados estan registrados")    
-                os.system('pause')    
+        if(contCorrecto==2):
+            entra=True
+        elif(contCorrecto==1):
+            print("Uno de los equipos ingresados no se encuentra registrado")
+            os.system('pause')    
+        elif(contCorrecto==0):
+            print("Ninguno de los equipos ingresados estan registrados")    
+            os.system('pause')    
         if(entra):
             for i,item in enumerate(informacionPartidos):
                 if(nombreEquipoLocal in item):  
