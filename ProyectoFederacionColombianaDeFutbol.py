@@ -25,14 +25,25 @@ while isActivate:
     if(op==1):
         os.system('cls')
         print(tituloRegistroDeEquipos)
+        noExiste=True
         nombreEquipo=str(input("Ingrese el nombre del equipo que va a registrar:_"))
-        if(nombreEquipo!=""):
-            informacionPartidos.append([nombreEquipo,partidosJugados,partidosGanados,partidosPerdidos,partidosEmpatados,golesAnotados,golesEnContra,totalDePuntos])
+        for i,item in enumerate(informacionPartidos):
+            if(item[0]==nombreEquipo):
+                noExiste=False
+            else:
+                i=+1
+        if(noExiste):
+            if(nombreEquipo!=""):
+                informacionPartidos.append([nombreEquipo,partidosJugados,partidosGanados,partidosPerdidos,partidosEmpatados,golesAnotados,golesEnContra,totalDePuntos])
+                print("Equipo registrado exitosamente")
+                os.system('pause')
+            else:
+                print("No se ingreso nombre")
+                os.system('pause')
+            os.system('cls')
         else:
-            print("No se ingreso nombre")
+            print("El equipo ",nombreEquipo," ya fue registrado")
             os.system('pause')
-        
-        os.system('cls')
     elif(op==2):
         nombreEquipoLocal=str(input("Ingrese el nombre del equipo local: "))
         nombreEquipoVisitante=str(input("Ingrese el nombre del equipo visitante: "))
@@ -48,9 +59,11 @@ while isActivate:
             if(contCorrecto==2):
                 entra=True
             elif(contCorrecto==1):
-                print("Uno de los equipos ingresados no se encuentra registrado")    
+                print("Uno de los equipos ingresados no se encuentra registrado")
+                os.system('pause')    
             elif(contCorrecto==0):
                 print("Ninguno de los equipos ingresados estan registrados")    
+                os.system('pause')    
         if(entra):
             for i,item in enumerate(informacionPartidos):
                 if(nombreEquipoLocal in item):  
